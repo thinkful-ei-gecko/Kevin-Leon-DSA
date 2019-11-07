@@ -27,11 +27,22 @@ class LinkedList {
       currentNode = currentNode.next;
     }
     currentNode.next = new _Node(value, null);
-    console.log(currentNode)
+    console.log(currentNode);
   }
 
-  insertBefore(value) {
-
+  insertBefore(value, findValue) {
+    let currNode = this.head;
+    if (currNode === null) {
+      console.error(`The list is empty!`);
+      return;
+    }
+    while (currNode.next !== null) {
+      if (currNode.next.value === findValue) { // found the stuff!11~
+        currNode.next = new _Node(value, currNode.next);
+      }
+      currNode = currNode.next;
+    }
+    console.error(`Node with ${findValue} does not exist!`);
   }
 
   remove(value) {
@@ -85,7 +96,8 @@ function main() {
 
   SLL.remove('squirrel');
 
-
+  let newLL = new LinkedList();
+  newLL.insertBefore('haha','xxx');
 }
 
 main();
