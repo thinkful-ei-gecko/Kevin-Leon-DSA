@@ -22,8 +22,8 @@ class LinkedList {
       this.insertFirst(value);
       return;
     }
-    
-    while(currentNode.next !== null) {
+
+    while (currentNode.next !== null) {
       currentNode = currentNode.next;
     }
     currentNode.next = new _Node(value, null);
@@ -36,7 +36,8 @@ class LinkedList {
       return;
     }
     while (currNode.next !== null) {
-      if (currNode.next.value === findValue) { // found the stuff!11~
+      if (currNode.next.value === findValue) {
+        // found the stuff!11~
         currNode.next = new _Node(value, currNode.next);
         return;
       }
@@ -86,13 +87,13 @@ class LinkedList {
       return;
     }
 
-    if(currentNode.value === value) {
+    if (currentNode.value === value) {
       this.head = currentNode.next;
       return;
     }
 
     // A -> B -> C -> D -> null
-    while(currentNode.next !== null) {
+    while (currentNode.next !== null) {
       if (currentNode.next.value === value) {
         currentNode.next = currentNode.next.next;
         return;
@@ -109,7 +110,7 @@ class LinkedList {
       console.error(`The list is empty!`);
     }
 
-    while(currentNode.next !== null) {
+    while (currentNode.next !== null) {
       if (currentNode.value === value) {
         return currentNode;
       }
@@ -175,7 +176,8 @@ function findPrevious(linkedList, findValue) {
   }
 
   while (currNode.next !== null) {
-    if (currNode.next.value === findValue) { // found the stuff!11~
+    if (currNode.next.value === findValue) {
+      // found the stuff!11~
       return currNode;
     }
     currNode = currNode.next;
@@ -231,5 +233,106 @@ function main() {
 
   // console.log(JSON.stringify(SLL, null, 2));
 }
+// main();
 
-main();
+//           n
+// A -> B -> C -> B -> E -> F -> null
+//      c
+// A -> B -> C -> E -> F -> null
+// removes duplicates O(n!) or O(n^2)
+function WhatDoesThisProgramDo(lst) {
+  let current = lst.head;
+  while (current !== null) {
+    let newNode = current;
+    while (newNode.next !== null) {
+      if (newNode.next.value === current.value) {
+        newNode.next = newNode.next.next;
+      } else {
+        newNode = newNode.next;
+      }
+    }
+    current = current.next;
+  }
+}
+//           c
+// A -> B -> C -> null
+function reverseList(linkedList) {
+  let currentNode = linkedList.head;
+  let previousNode = null;
+  let nextNode = linkedList.head.next;
+
+  if (currentNode === null || currentNode.next === null) {
+    console.error('nope');
+    return;
+  }
+
+  while (currentNode !== null) {
+    nextNode = currentNode.next; // store B
+    currentNode.next = previousNode; // A -> null
+    previousNode = currentNode; // A
+    currentNode = nextNode; // move to B
+
+    if (nextNode === null) {
+      linkedList.head = previousNode;
+    }
+  }
+  return linkedList;
+}
+
+function thirdFromEnd(ll) {
+  let newLL = reverseList(ll);
+  let count = 0;
+  let currentNode = newLL.head;
+  while (currentNode !== null) {
+    if (count === 3) {
+      return currentNode;
+    }
+    currentNode = currentNode.next;
+    count++;
+  }
+  console.error('nope');
+}
+
+function middleOf(ll) {
+  let _size = size(ll);
+  if (_size % 2 > 0) {
+    let mid = Math.floor(_size / 2);
+    let count = 0;
+    let currentNode = ll.head;
+    while (currentNode !== null) {
+      if (count === mid) {
+        return currentNode;
+      }
+      currentNode = currentNode.next;
+      count++;
+    }
+  }
+  console.error('This list does not have a middle');
+
+}
+
+function main2() {
+  let SLL = new LinkedList();
+  // SLL.insertLast('Apollo');
+  // SLL.insertLast('Boomer');
+  // SLL.insertLast('Helo');
+  // SLL.insertLast('Husker');
+  // SLL.insertLast('Starbuck');
+  SLL.insertLast('1');
+  SLL.insertLast('2');
+  SLL.insertLast('3');
+  SLL.insertLast('4');
+  SLL.insertLast('5');
+  display(SLL);
+  console.log('----');
+
+  // WhatDoesThisProgramDo(SLL);
+  // reverseList(SLL);
+  // console.log(thirdFromEnd(SLL).value);
+
+  // console.log(middleOf(SLL));
+
+  // display(SLL);
+  // console.log(JSON.stringify(SLL, null, 2));
+}
+main2();
