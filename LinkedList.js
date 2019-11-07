@@ -1,7 +1,154 @@
 class _Node {
-  constructor(value, next) {
-    (this.value = value), (this.next = next);
+  constructor(value, next, previous=null) {
+    (this.value = value), (this.next = next), (this.previous = previous);
   }
+}
+
+class CycleList {
+  constructor() {
+    let A = new _Node('A', null);
+    let B = new _Node('B', null);
+    let C = new _Node('C', null);
+    let D = new _Node('D', null);
+    let E = new _Node('E', null);
+    let F = new _Node('F', null);
+    this.head = A;
+    A.next = B;
+    B.next = C;
+    C.next = D;
+    D.next = E;
+    E.next = F;
+    F.next = A;
+  }
+}
+
+class DoublyLinkedList {
+  constructor() { 
+    this.head = null;
+    this.tail = null;
+  }
+
+  insertFirst(value) {
+    this.head = new _Node(value, this.head, null);
+  }
+
+  insertLast(value) {
+    let currentNode = this.head;
+    if (currentNode === null) {
+      this.insertFirst(value);
+      this.tail = this.head;
+      return;
+    }
+
+    while (currentNode.next !== null) {
+      currentNode = currentNode.next;
+    }
+    let newNode = new _Node(value, null, currentNode);
+    currentNode.next = newNode;
+
+    this.tail = newNode;
+  }
+
+  insertBefore(value, findValue) {
+    let currNode = this.head;
+    if (currNode === null) {
+      console.error(`The list is empty!`);
+      return;
+    }
+    while (currNode.next !== null) {
+      if (currNode.next.value === findValue) {
+        // found the stuff!11~
+        currNode.next = new _Node(value, currNode.next, currNode);
+        return;
+      }
+      currNode = currNode.next;
+    }
+    console.error(`Node with ${findValue} does not exist!`);
+  }
+
+  insertAfter(value, findValue) {
+    let currNode = this.head;
+    if (currNode === null) {
+      console.error(`The list is empty!`);
+      return;
+    }
+
+    while (currNode.next !== null) {
+      if (currNode.value === findValue) {
+        currNode.next = new _Node(value, currNode.next, currNode);
+        return;
+      }
+      currNode = currNode.next;
+    }
+    console.error(`Node with ${findValue} does not exist!`);
+  }
+
+  insertAt(value, numPosition) {
+    let currNode = this.head;
+    if (numPosition === 0) {
+      this.head = new _Node(value, currNode.next, null);
+      this.tail = this.head;
+      return;
+    }
+    let count = 1;
+    while (currNode.next !== null) {
+      if (count === numPosition) {
+        currNode.next = new _Node(value, currNode.next, currNode);
+        return;
+      }
+      currNode = currNode.next;
+      count++;
+    }
+    console.error(`Node with position of ${numPosition} does not exist!`);
+  }
+
+  remove(value) {
+    let currentNode = this.head;
+    if (currentNode === null) {
+      return;
+    }
+
+    if (currentNode.value === value) {
+
+      this.head = currentNode.next;
+      currentNode.next.previous = null;
+      if (currentNode.next.next === null) {
+        this.tail = currentNode.next;
+      }
+      return;
+    }
+    while (currentNode.next !== null) {
+      if (currentNode.next.value === value) {
+        currentNode.next = currentNode.next.next;
+        if (currentNode.next.next !== null) {
+          currentNode.next.next.previous = currentNode;
+        }
+        else {
+          this.tail = currentNode;
+        }
+        return;
+      }
+      // keep going
+      currentNode = currentNode.next;
+    }
+    console.error(`Node with ${value} does not exist!`);
+  }
+
+  find(value) {
+    let currentNode = this.head;
+    if (currentNode === null) {
+      console.error(`The list is empty!`);
+    }
+
+    while (currentNode.next !== null) {
+      if (currentNode.value === value) {
+        return currentNode;
+      }
+      currentNode = currentNode.next;
+    }
+    console.error(`Node with ${value} does not exist!`);
+  }
+
 }
 
 class LinkedList {
@@ -126,7 +273,6 @@ function display(linkedList) {
     console.error('List is empty!');
     return;
   }
-
   while (currNode.next !== null) {
     console.log(currNode.value);
     currNode = currNode.next;
@@ -134,6 +280,29 @@ function display(linkedList) {
 
   if (currNode.next === null) {
     console.log(currNode.value);
+  }
+}
+
+
+function superiorDisplay(linkedList) {
+  let currNode = linkedList.head;
+  if (currNode === null) {
+    console.error('List is empty!');
+    return;
+  }
+  while (currNode.next !== null) {
+    console.log(currNode.value);
+    console.log(currNode.next);
+    console.log(currNode.prev);
+    console.log('---');
+    currNode = currNode.next;
+  }
+
+  if (currNode.next === null) {
+    console.log(currNode.value);
+    console.log(currNode.next);
+    console.log(currNode.prev);
+    console.log('---');
   }
 }
 
@@ -335,4 +504,48 @@ function main2() {
   // display(SLL);
   // console.log(JSON.stringify(SLL, null, 2));
 }
-main2();
+// main2();
+
+
+//checks if a linked list is TRUEly a cycle.
+function cycleList(ll) {
+  if (ll.head.next === null) {
+    console.error('cannot check cycle of single element list');
+    return false;
+  }
+
+  let slowNode = ll.head;
+  let fastNode = ll.head;
+
+  //A - B - C
+  while (fastNode.next !== null && fastNode.next.next !== null) {
+    slowNode = slowNode.next;
+    fastNode = fastNode.next.next;
+    if (slowNode.value === fastNode.value) {
+      return true;
+    }
+  }
+  console.error('did not find cycle');
+  return false;
+}
+function main3() {
+  let LL = new CycleList();
+  // display(LL); //RoxXXx 
+  console.log(cycleList(LL));
+
+
+}
+// main3();
+
+function mainDLL() {
+  let DLL = new DoublyLinkedList();
+  DLL.insertLast('Aquaria');
+  DLL.insertLast('Cap');
+  DLL.insertLast('Gem');
+  DLL.insertLast('Pic');
+  DLL.insertLast('Tauron');
+  superiorDisplay(DLL);
+  console.log(DLL.head);
+  console.log(DLL.tail);
+}
+mainDLL();
