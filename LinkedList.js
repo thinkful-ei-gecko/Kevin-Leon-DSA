@@ -27,7 +27,6 @@ class LinkedList {
       currentNode = currentNode.next;
     }
     currentNode.next = new _Node(value, null);
-    console.log(currentNode);
   }
 
   insertBefore(value, findValue) {
@@ -39,6 +38,7 @@ class LinkedList {
     while (currNode.next !== null) {
       if (currNode.next.value === findValue) { // found the stuff!11~
         currNode.next = new _Node(value, currNode.next);
+        return;
       }
       currNode = currNode.next;
     }
@@ -55,6 +55,7 @@ class LinkedList {
     while (currNode.next !== null) {
       if (currNode.value === findValue) {
         currNode.next = new _Node(value, currNode.next);
+        return;
       }
       currNode = currNode.next;
     }
@@ -70,8 +71,10 @@ class LinkedList {
     let count = 1;
     while (currNode.next !== null) {
       if (count === numPosition) {
-        
+        currNode.next = new _Node(value, currNode.next);
+        return;
       }
+      currNode = currNode.next;
       count++;
     }
     console.error(`Node with position of ${numPosition} does not exist!`);
@@ -128,8 +131,16 @@ function main() {
 
   SLL.remove('squirrel');
 
+  SLL.insertBefore('Athena', 'Boomer');
+  SLL.insertAfter('Hotdog', 'Helo');
+  SLL.insertAt('Kat', 3);
+
+  SLL.remove('Tauhida');
+
   let newLL = new LinkedList();
   newLL.insertBefore('haha','xxx');
+
+  console.log(JSON.stringify(SLL, null, 2));
 }
 
 main();
