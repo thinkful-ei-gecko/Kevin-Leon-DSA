@@ -45,6 +45,38 @@ class LinkedList {
     console.error(`Node with ${findValue} does not exist!`);
   }
 
+  insertAfter(value, findValue) {
+    let currNode = this.head;
+    if (currNode === null) {
+      console.error(`The list is empty!`);
+      return;
+    }
+
+    while (currNode.next !== null) {
+      if (currNode.value === findValue) {
+        currNode.next = new _Node(value, currNode.next);
+      }
+      currNode = currNode.next;
+    }
+    console.error(`Node with ${findValue} does not exist!`);
+  }
+
+  insertAt(value, numPosition) {
+    let currNode = this.head;
+    if (numPosition === 0) {
+      this.head = new _Node(value, currNode.next);
+      return;
+    }
+    let count = 1;
+    while (currNode.next !== null) {
+      if (count === numPosition) {
+        
+      }
+      count++;
+    }
+    console.error(`Node with position of ${numPosition} does not exist!`);
+  }
+
   remove(value) {
     let currentNode = this.head;
     if (currentNode === null) {
