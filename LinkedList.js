@@ -119,6 +119,85 @@ class LinkedList {
   }
 }
 
+function display(linkedList) {
+  let currNode = linkedList.head;
+  if (currNode === null) {
+    console.error('List is empty!');
+    return;
+  }
+
+  while (currNode.next !== null) {
+    console.log(currNode.value);
+    currNode = currNode.next;
+  }
+
+  if (currNode.next === null) {
+    console.log(currNode.value);
+  }
+}
+
+function size(linkedList) {
+  let count = 1;
+  let currNode = linkedList.head;
+  if (currNode === null) {
+    console.error('List is empty!');
+    return;
+  }
+  if (currNode.next === null) {
+    return count;
+  }
+
+  while (currNode.next !== null) {
+    count++;
+    currNode = currNode.next;
+  }
+
+  return count;
+}
+
+function isEmpty(linkedList) {
+  if (linkedList.head === null) {
+    return true;
+  }
+  return false;
+}
+
+function findPrevious(linkedList, findValue) {
+  let currNode = linkedList.head;
+  if (currNode === null) {
+    console.error(`The list is empty!`);
+    return;
+  }
+
+  if (currNode.value === findValue) {
+    console.log('No previous node for 1-item linked list');
+    return;
+  }
+
+  while (currNode.next !== null) {
+    if (currNode.next.value === findValue) { // found the stuff!11~
+      return currNode;
+    }
+    currNode = currNode.next;
+  }
+  console.error(`Node with ${findValue} does not exist!`);
+}
+
+function findLast(linkedList) {
+  let currNode = linkedList.head;
+  if (currNode === null) {
+    console.error(`The list is empty!`);
+    return;
+  }
+
+  while (currNode.next !== null) {
+    if (currNode.next.next === null) {
+      return currNode.next;
+    }
+    currNode = currNode.next;
+  }
+}
+
 function main() {
   let SLL = new LinkedList();
   SLL.insertLast('Apollo');
@@ -137,10 +216,20 @@ function main() {
 
   SLL.remove('Tauhida');
 
-  let newLL = new LinkedList();
-  newLL.insertBefore('haha','xxx');
+  display(SLL);
+  console.log(size(SLL));
+  console.log(isEmpty(SLL));
+  console.log('findPrevious: ', findPrevious(SLL, 'Husker'));
+  console.log('findLast', findLast(SLL));
 
-  console.log(JSON.stringify(SLL, null, 2));
+  let newLL = new LinkedList();
+  // newLL.insertBefore('haha','xxx');
+  // newLL.insertLast('test');
+  // newLL.insertLast('testa');
+  // console.log(size(newLL));
+  console.log(isEmpty(newLL));
+
+  // console.log(JSON.stringify(SLL, null, 2));
 }
 
 main();
